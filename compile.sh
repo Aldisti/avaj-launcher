@@ -23,20 +23,16 @@ set -e
 
 # no args
 compile() {
-    local files="$(find * -name "*.java")"
-    if [ "${files}" = "" ]; then
-        warning "No file to compile found!"
-        return 1
-    fi
-    javac ${files}
+    find * -name "*.java" > .sources
+    javac -d target @.sources
+    rm .sources
 }
 
 # no args
 clean() {
-    local compiled_files="$(find * -name "*.class" | tr '\n' ' ')"
-    if ! [ "${compiled_files}" = "" ]; then
-        rm ${compiled_files}
-        info "Files removed"
+    if [ -d target ]; then
+        rm -r target
+        info "Target removed"
     fi
 }
 

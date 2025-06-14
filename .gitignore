@@ -27,4 +27,4 @@ replay_pid*
 .*.swp
 .vscode
 .idea
-
+**/target
