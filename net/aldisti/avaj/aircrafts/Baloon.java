@@ -7,22 +7,28 @@ public class Baloon extends Aircraft {
 
     public Baloon(long id, String name, Coordinates coordinates) {
         super(id, name, coordinates);
+        touchDownMessage = "I'm becoming one with the Earth!";
     }
 
     public void updateConditions() {
         String weather = weatherTower.getWeather(coordinates);
         switch (weather) {
             case "SUN":
-                updated = new Coordinates(2, 0, 4);
+                coordinates.addLongitude(2);
+                coordinates.addHeight(4);
+                System.out.println("Let's beat that weakling of Carl Fredricksen.");
                 break;
             case "RAIN":
-                updated = new Coordinates(0, 0, -5);
+                coordinates.addHeight(-5);
+                System.out.println("Whoa, whoa, whoa!");
                 break;
             case "FOG":
-                updated = new Coordinates(0, 0, -3);
+                coordinates.addHeight(-3);
+                System.out.println("I just need to stay afloat!");
                 break;
             case "SNOW":
-                updated = new Coordinates(0, 0, -15);
+                coordinates.addHeight(-15);
+                System.out.println("Perhaps he wasn't so weak...");
                 break;
             default:
                 // Unreachable statement
