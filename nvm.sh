@@ -38,16 +38,26 @@ clean() {
     fi
 }
 
+# 1: scenario to execute, default value is: scenarios/scenario.txt
 run() {
     if ! [ -d target ]; then
         compile
     fi
-    java -cp target net.aldisti.avaj.Simulator scenario.txt
+
+    local scenario="$1"
+    if [ "${scenario}" == "" ]; then
+        local scenario="scenarios/scenario.txt"
+    fi
+
+    set +e # undos the `set -e` command
+    java -cp target net.aldisti.avaj.Simulator ${scenario}
     local ret="$?"
+    set -e # exit at the first cammand that fails
+
     if [ $ret -eq 0 ]; then
         info "Program executed successfully"
     else
-        error "Program exited with status code $ret"
+        error "Program exited with code ${ret}"
     fi
 }
 
@@ -57,11 +67,12 @@ help() {
     echo -e "usage: ./nvm.sh [<goal(s)>]"
     echo
     echo -e "Goals:"
-    echo -e "  clean       Removes all compiled files."
-    echo -e "  compile     Compiles all the java files and puts them inside ./target."
-    echo -e "  run         Compiles if not already done, and then executes the java program."
-    echo -e "  re          Cleans, compiles and then runs the java program."
-    echo -e "  help        Shows this page."
+    echo -e "  clean                  Removes all compiled files."
+    echo -e "  compile                Compiles all the java files and puts them inside ./target."
+    echo -e "  run <scenario>         Compiles if not already done, and then executes the java program"
+    echo -e "                         using the scenario passed as argument, or scenario.txt if nothing is passed."
+    echo -e "  re                     Cleans, compiles and then runs the java program."
+    echo -e "  help                   Shows this page."
     echo
 }
 
@@ -80,7 +91,11 @@ while [ $# -gt 0 ]; do
             compile
             ;;
         run)
-            run
+            if [[ "$1" == *txt ]]; then
+                scenario="$1"
+                shift
+            fi
+            run ${scenario}
             ;;
         re)
             clean
