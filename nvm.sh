@@ -36,6 +36,10 @@ clean() {
         rm -r target
         info "Target removed"
     fi
+
+    if [ -f simulation.txt ]; then
+        rm simulation.txt
+    fi
 }
 
 # This method disables the catch any error (set -e)

@@ -4,7 +4,7 @@ package net.aldisti.avaj.towers;
 import net.aldisti.avaj.Coordinates;
 
 public class WeatherTower extends Tower {
-    private static WeatherProvider provider = WeatherProvider.create();
+    private static final WeatherProvider provider = WeatherProvider.create();
 
     public WeatherTower() {
         super("weather tower");

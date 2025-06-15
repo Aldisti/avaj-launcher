@@ -4,16 +4,13 @@ import net.aldisti.avaj.Coordinates;
 
 public class WeatherProvider {
 
-    private static WeatherProvider provider = null;
+    private static WeatherProvider provider = new WeatherProvider();
 
     private String[] weather = {"RAIN", "FOG", "SUN", "SNOW"};
 
-    private WeatherProvider() {
-    }
+    private WeatherProvider() { }
 
     public static WeatherProvider create() {
-        if (provider == null)
-            provider = new WeatherProvider();
         return provider;
     }
 
