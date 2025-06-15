@@ -22,8 +22,9 @@ public class WeatherProvider {
     public String getCurrentWeather(Coordinates coordinates) {
         int a = coordinates.getLongitude();
         int b = coordinates.getLatitude();
+        int c = coordinates.getHeight();
 
-        int index = (a * b ^ (a + b)) % weather.length;
+        int index = (a * b ^ ((a + b) * c)) % weather.length;
         return weather[index];
     }
 }
