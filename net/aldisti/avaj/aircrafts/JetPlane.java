@@ -6,22 +6,28 @@ import net.aldisti.avaj.towers.InvalidWeatherException;
 public class JetPlane extends Aircraft {
     public JetPlane(long id, String name, Coordinates coordinates) {
         super(id, name, coordinates);
+        this.touchDownMessage = "Following in AI171's footsteps...";
     }
 
     public void updateConditions() {
         String weather = weatherTower.getWeather(coordinates);
         switch (weather) {
             case "SUN":
-                updated = new Coordinates(0, 10, 2);
+                coordinates.addLatitude(10);
+                coordinates.addHeight(2);
+                System.out.println("Woohoo! I'm going to shine!");
                 break;
             case "RAIN":
-                updated = new Coordinates(0, 5, 0);
+                coordinates.addLatitude(5);
+                System.out.println("We didn't need this.");
                 break;
             case "FOG":
-                updated = new Coordinates(0, 1, 0);
+                coordinates.addLatitude(1);
+                System.out.println("I'm not a Tesla, I can see through this!");
                 break;
             case "SNOW":
-                updated = new Coordinates(0, 0, -7);
+                coordinates.addHeight(-7);
+                System.out.println("Nothing can stop me!");
                 break;
             default:
                 // Unreachable statement
