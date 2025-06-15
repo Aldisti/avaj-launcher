@@ -21,7 +21,7 @@ public class Helicopter extends Aircraft {
                 updated = new Coordinates(1, 0, 0);
                 break;
             case "SNOW":
-                updated = new Coordinates(0, 0, 12);
+                updated = new Coordinates(0, 0, -12);
                 break;
             default:
                 // Unreachable statement

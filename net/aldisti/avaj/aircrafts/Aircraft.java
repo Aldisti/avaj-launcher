@@ -30,6 +30,6 @@ public class Aircraft extends Flyable {
     }
 
     public String toString() {
-        return this.getClass().getName() + "#" + name;
+        return this.getClass().getSimpleName() + "#" + name;
     }
 }

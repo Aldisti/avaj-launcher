@@ -16,22 +16,22 @@ public class Simulator {
     private static final WeatherTower tower = new WeatherTower();
     private static int cycles = -1;
 
-    public static int main(int ac, String[] av) {
-        if (ac != 2) {
-            System.out.println("Error: usage ./Simulator <path/to/scenario>");
-            return 1;
+    public static void main(String[] av) {
+        if (av.length != 1) {
+            System.out.println("Error: ehi, give me a scenario to simulate!");
+            System.exit(1);
         }
 
-        initializeScenario(av[1]);
+        initializeScenario(av[0]);
 
         if (!tower.hasAnyObserver()) {
             System.out.println("Error: cannot simulate without at least an aircraft!");
-            return 7;
+            System.exit(7);
         }
 
         mainLoop();
 
-        return 0;
+        System.exit(0);
     }
 
     /**

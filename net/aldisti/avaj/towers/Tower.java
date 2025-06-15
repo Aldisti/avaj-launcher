@@ -2,6 +2,8 @@ package net.aldisti.avaj.towers;
 
 import net.aldisti.avaj.aircrafts.Flyable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +14,8 @@ public class Tower {
 
     public Tower(String name) {
         this.name = name;
+        this.observers = new ArrayList<>();
+        this.observersIds = new HashSet<>();
     }
 
     public void register(Flyable flyable) {
