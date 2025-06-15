@@ -38,7 +38,7 @@ public class Simulator {
             System.exit(9);
         }
 
-        System.exit(0);
+        Logger.close();
     }
 
     /**

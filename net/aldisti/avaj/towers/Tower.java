@@ -1,5 +1,6 @@
 package net.aldisti.avaj.towers;
 
+import net.aldisti.avaj.Logger;
 import net.aldisti.avaj.aircrafts.Flyable;
 import net.aldisti.avaj.exceptions.ObserverAlreadyRegisteredException;
 import net.aldisti.avaj.exceptions.ObserverNotRegisteredException;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Tower {
+    private static final Logger logger = Logger.getLogger();
+
     private final String name;
     private final List<Flyable> observers;
     private final Set<Long> observersIds;
@@ -26,7 +29,7 @@ public class Tower {
 
         observers.add(flyable);
         observersIds.add(flyable.getId());
-        System.out.println("Tower says: " + flyable.toString() + " registered to " + name + ".");
+        logger.log(String.format("Tower says: %s registered to %s.", flyable, name));
     }
 
     public void unregister(Flyable flyable) {
@@ -35,7 +38,7 @@ public class Tower {
 
         observers.remove(flyable);
         observersIds.remove(flyable.getId());
-        System.out.println("Tower says: " + flyable.toString() + " unregistered from " + name + ".");
+        logger.log(String.format("Tower says: %s unregistered from %s.", flyable, name));
     }
 
     protected void conditionChanged() {

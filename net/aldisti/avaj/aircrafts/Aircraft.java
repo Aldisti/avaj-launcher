@@ -2,8 +2,11 @@
 package net.aldisti.avaj.aircrafts;
 
 import net.aldisti.avaj.Coordinates;
+import net.aldisti.avaj.Logger;
 
 public class Aircraft extends Flyable {
+    private static final Logger logger = Logger.getLogger();
+
     protected final long id;
     protected final String name;
     protected final Coordinates coordinates;
@@ -25,9 +28,7 @@ public class Aircraft extends Flyable {
     }
 
     protected void say(String message) {
-        System.out.println(
-            String.format("%s: %s", toString(), message)
-        );
+        logger.log(String.format("%s: %s", toString(), message));
     }
 
     public long getId() {

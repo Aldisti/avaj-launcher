@@ -22,7 +22,7 @@ public class WeatherProvider {
         int b = coordinates.getLatitude();
         int c = coordinates.getHeight();
 
-        int index = (a * b ^ ((a + b) * c)) % weather.length;
+        int index = (a * b * c) % weather.length;
         return weather[index];
     }
 }
