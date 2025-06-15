@@ -1,6 +1,8 @@
 package net.aldisti.avaj.towers;
 
 import net.aldisti.avaj.aircrafts.Flyable;
+import net.aldisti.avaj.exceptions.ObserverAlreadyRegisteredException;
+import net.aldisti.avaj.exceptions.ObserverNotRegisteredException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 
 public class Tower {
-    private String name;
-    private List<Flyable> observers;
-    private Set<Long> observersIds;
+    private final String name;
+    private final List<Flyable> observers;
+    private final Set<Long> observersIds;
 
     public Tower(String name) {
         this.name = name;
@@ -19,29 +21,25 @@ public class Tower {
     }
 
     public void register(Flyable flyable) {
-        if (observersIds.contains(flyable.getId())) {
-            // TODO: throw exception
-            System.out.println("Flyable already present! Throw exception!!!");
-            return;
-        }
+        if (observersIds.contains(flyable.getId()))
+            throw new ObserverAlreadyRegisteredException(flyable.getId());
+
         observers.add(flyable);
         observersIds.add(flyable.getId());
         System.out.println("Tower says: " + flyable.toString() + " registered to " + name + ".");
     }
 
     public void unregister(Flyable flyable) {
-        if (!observersIds.contains(flyable.getId())) {
-            // TODO: throw exception
-            System.out.println("Flyable not found! Throw exception!!!");
-            return;
-        }
+        if (!observersIds.contains(flyable.getId()))
+            throw new ObserverNotRegisteredException(flyable.getId());
+
         observers.remove(flyable);
         observersIds.remove(flyable.getId());
         System.out.println("Tower says: " + flyable.toString() + " unregistered from " + name + ".");
     }
 
     protected void conditionChanged() {
-        observers.forEach(Flyable::updateConditions);
+        List.copyOf(observers).forEach(Flyable::updateConditions);
     }
 
     public boolean hasAnyObserver() {

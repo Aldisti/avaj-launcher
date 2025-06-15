@@ -30,11 +30,15 @@ public class Coordinates {
         return height;
     }
 
-    public void add(final Coordinates coords) {
-        longitude += coords.getLongitude();
-        latitude += coords.getLatitude();
-        height += coords.getHeight();
-        if (height > 100)
-            height = 100;
+    public void addLongitude(int longitude) {
+        this.longitude += longitude;
+    }
+
+    public void addLatitude(int latitude) {
+        this.latitude += latitude;
+    }
+
+    public void addHeight(int height) {
+        this.height = Integer.min(100, this.height + height);
     }
 }

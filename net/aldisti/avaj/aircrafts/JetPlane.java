@@ -1,7 +1,7 @@
 package net.aldisti.avaj.aircrafts;
 
 import net.aldisti.avaj.Coordinates;
-import net.aldisti.avaj.towers.InvalidWeatherException;
+import net.aldisti.avaj.exceptions.InvalidWeatherException;
 
 public class JetPlane extends Aircraft {
     public JetPlane(long id, String name, Coordinates coordinates) {
@@ -15,19 +15,19 @@ public class JetPlane extends Aircraft {
             case "SUN":
                 coordinates.addLatitude(10);
                 coordinates.addHeight(2);
-                System.out.println("Woohoo! I'm going to shine!");
+                say("Woohoo! I'm going to shine!");
                 break;
             case "RAIN":
                 coordinates.addLatitude(5);
-                System.out.println("We didn't need this.");
+                say("We didn't need this.");
                 break;
             case "FOG":
                 coordinates.addLatitude(1);
-                System.out.println("I'm not a Tesla, I can see through this!");
+                say("I'm not a Tesla, I can see through this!");
                 break;
             case "SNOW":
                 coordinates.addHeight(-7);
-                System.out.println("Nothing can stop me!");
+                say("Nothing can stop me!");
                 break;
             default:
                 // Unreachable statement

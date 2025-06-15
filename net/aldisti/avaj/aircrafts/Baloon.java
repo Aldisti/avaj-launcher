@@ -1,7 +1,7 @@
 package net.aldisti.avaj.aircrafts;
 
 import net.aldisti.avaj.Coordinates;
-import net.aldisti.avaj.towers.InvalidWeatherException;
+import net.aldisti.avaj.exceptions.InvalidWeatherException;
 
 public class Baloon extends Aircraft {
 
@@ -16,19 +16,19 @@ public class Baloon extends Aircraft {
             case "SUN":
                 coordinates.addLongitude(2);
                 coordinates.addHeight(4);
-                System.out.println("Let's beat that weakling of Carl Fredricksen.");
+                say("Let's beat that weakling of Carl Fredricksen.");
                 break;
             case "RAIN":
                 coordinates.addHeight(-5);
-                System.out.println("Whoa, whoa, whoa!");
+                say("Whoa, whoa, whoa!");
                 break;
             case "FOG":
                 coordinates.addHeight(-3);
-                System.out.println("I just need to stay afloat!");
+                say("I just need to stay afloat!");
                 break;
             case "SNOW":
                 coordinates.addHeight(-15);
-                System.out.println("Perhaps he wasn't so weak...");
+                say("Perhaps he wasn't so weak...");
                 break;
             default:
                 // Unreachable statement

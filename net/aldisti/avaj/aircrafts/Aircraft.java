@@ -4,11 +4,11 @@ package net.aldisti.avaj.aircrafts;
 import net.aldisti.avaj.Coordinates;
 
 public class Aircraft extends Flyable {
-    protected long id;
-    protected String name;
-    protected Coordinates coordinates;
+    protected final long id;
+    protected final String name;
+    protected final Coordinates coordinates;
 
-    protected Coordinates updated;
+    protected String touchDownMessage;
 
     protected Aircraft(long id, String name, Coordinates coordinates) {
         this.id = id;
@@ -17,12 +17,17 @@ public class Aircraft extends Flyable {
     }
 
     public void updateConditions() {
-        coordinates.add(updated);
-        updated = new Coordinates();
         if (coordinates.getHeight() <= 0) {
+            say(touchDownMessage);
             weatherTower.unregister(this);
             return;
         }
+    }
+
+    protected void say(String message) {
+        System.out.println(
+            String.format("%s: %s", toString(), message)
+        );
     }
 
     public long getId() {
@@ -30,6 +35,8 @@ public class Aircraft extends Flyable {
     }
 
     public String toString() {
-        return this.getClass().getSimpleName() + "#" + name;
+        return String.format("%s#%s(%d)",
+            this.getClass().getSimpleName(), name, id
+        );
     }
 }

@@ -23,8 +23,10 @@ set -e
 
 # no args
 compile() {
-    find * -name "*.java" > .sources
-    javac -d target @.sources
+    local sources_file=".sources"
+    find * -name "*.java" > ${sources_file}
+    javac -d target @${sources_file}
+    info "Compiled $(cat ${sources_file} | wc -l) classes"
     rm .sources
 }
 
@@ -36,17 +38,36 @@ clean() {
     fi
 }
 
+run() {
+    if ! [ -d target ]; then
+        compile
+    fi
+    java -cp target net.aldisti.avaj.Simulator scenario.txt
+}
 
-while getopts ":cC" opt; do
+while [ $# -gt 0 ]; do
+    opt="$(echo $1 | tr 'A-Z' 'a-z')"
+    shift
     case ${opt} in
-        c)
-            compile
-            ;;
-        C)
+        clean)
             clean
             ;;
+        compile)
+            compile
+            ;;
+        recompile)
+            clean
+            compile
+            ;;
+        run)
+            run
+            ;;
+        re)
+            clean
+            run
+            ;;
         ?)
-            error "Invalid option: ${opt}"
+            error "Invalid argument: ${opt}"
             exit 1
         ;;
     esac

@@ -1,9 +1,10 @@
-package net.aldisti.avaj.aircrafts;
+
+package net.aldisti.avaj.exceptions;
 
 public class InvalidAircraftException extends Exception {
     private final String type;
 
-    InvalidAircraftException(String type) {
+    public InvalidAircraftException(String type) {
         super();
         this.type = type;
     }

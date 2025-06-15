@@ -9,8 +9,6 @@ public class WeatherProvider {
     private String[] weather = {"RAIN", "FOG", "SUN", "SNOW"};
 
     private WeatherProvider() {
-        // TODO: remove this log
-        System.out.println(">>> Instantiated weather provider!");
     }
 
     public static WeatherProvider create() {

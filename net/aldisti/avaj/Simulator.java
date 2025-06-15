@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import net.aldisti.avaj.aircrafts.InvalidAircraftException;
+import net.aldisti.avaj.exceptions.InvalidAircraftException;
+import net.aldisti.avaj.exceptions.ObserverAlreadyRegisteredException;
+import net.aldisti.avaj.exceptions.ObserverNotRegisteredException;
 import net.aldisti.avaj.aircrafts.AircraftFactory;
 import net.aldisti.avaj.aircrafts.Flyable;
 import net.aldisti.avaj.towers.WeatherTower;
@@ -26,10 +28,15 @@ public class Simulator {
 
         if (!tower.hasAnyObserver()) {
             System.out.println("Error: cannot simulate without at least an aircraft!");
-            System.exit(7);
+            System.exit(8);
         }
 
-        mainLoop();
+        try {
+            mainLoop();
+        } catch (ObserverNotRegisteredException onre) {
+            System.out.println("Error: couldn't unregister observer with id " + onre.getObserverId());
+            System.exit(9);
+        }
 
         System.exit(0);
     }
@@ -54,7 +61,7 @@ public class Simulator {
                     System.out.println("Error: found invalid line format!");
                     System.exit(3);
                 }
-                tower.register(parseFlyable(line));
+                parseFlyable(line).registerTower(tower);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error: file " + scenario + " not found!");
@@ -65,6 +72,9 @@ public class Simulator {
         } catch (InvalidAircraftException iae) {
             System.out.println("Error: cannot create aircraft of type '" + iae.getType() + "'");
             System.exit(6);
+        } catch (ObserverAlreadyRegisteredException oare) {
+            System.out.println("Error: observer with id " + oare.getObserverId() + " already registered!");
+            System.exit(7);
         }
     }
 

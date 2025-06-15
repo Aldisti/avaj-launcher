@@ -1,4 +1,5 @@
-package net.aldisti.avaj.towers;
+
+package net.aldisti.avaj.exceptions;
 
 public class InvalidWeatherException extends RuntimeException {
     private final String weather;
