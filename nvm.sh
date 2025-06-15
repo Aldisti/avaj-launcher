@@ -43,6 +43,26 @@ run() {
         compile
     fi
     java -cp target net.aldisti.avaj.Simulator scenario.txt
+    local ret="$?"
+    if [ $ret -eq 0 ]; then
+        info "Program executed successfully"
+    else
+        error "Program exited with status code $ret"
+    fi
+}
+
+help() {
+    echo -e "A custom version of mvn (Maven)."
+    echo
+    echo -e "usage: ./nvm.sh [<goal(s)>]"
+    echo
+    echo -e "Goals:"
+    echo -e "  clean       Removes all compiled files."
+    echo -e "  compile     Compiles all the java files and puts them inside ./target."
+    echo -e "  run         Compiles if not already done, and then executes the java program."
+    echo -e "  re          Cleans, compiles and then runs the java program."
+    echo -e "  help        Shows this page."
+    echo
 }
 
 while [ $# -gt 0 ]; do
@@ -65,6 +85,9 @@ while [ $# -gt 0 ]; do
         re)
             clean
             run
+            ;;
+        help)
+            help
             ;;
         ?)
             error "Invalid argument: ${opt}"
