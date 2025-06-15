@@ -38,6 +38,22 @@ clean() {
     fi
 }
 
+# This method disables the catch any error (set -e)
+# 1: scenario to execute, no default
+_execute() {
+    if [ -z "$1" ]; then
+        error "_execute received no arguments"
+    fi
+    local scenario="$1"
+
+    set +e # undos the `set -e` command
+
+    java -cp target net.aldisti.avaj.Simulator ${scenario}
+    local ret="$?"
+
+    return $ret
+}
+
 # 1: scenario to execute, default value is: scenarios/scenario.txt
 run() {
     if ! [ -d target ]; then
@@ -49,16 +65,36 @@ run() {
         local scenario="scenarios/scenario.txt"
     fi
 
-    set +e # undos the `set -e` command
-    java -cp target net.aldisti.avaj.Simulator ${scenario}
+    _execute ${scenario}
     local ret="$?"
-    set -e # exit at the first cammand that fails
+    set -e
 
     if [ $ret -eq 0 ]; then
         info "Program executed successfully"
     else
         error "Program exited with code ${ret}"
     fi
+}
+
+test() {
+    local total_tests="$(find scenarios -name "invalid*.txt" | wc -l)"
+    local ok_tests=0
+
+    info "Running ${total_tests} tests..."
+
+    for scenario in $(find scenarios -name "invalid*.txt" | tr '\n' ' '); do
+        _execute ${scenario} > /dev/null
+
+        if [ $? -eq 0 ]; then
+            echo -e " > ${RED}KO${RESET} ${scenario}"
+        else
+            echo -e " > ${GREEN}OK${RESET} ${scenario}"
+            ok_tests=$((ok_tests + 1))
+        fi
+    done
+    set -e
+
+    info "Successful tests ${ok_tests}/${total_tests}"
 }
 
 help() {
@@ -72,6 +108,7 @@ help() {
     echo -e "  run <scenario>         Compiles if not already done, and then executes the java program"
     echo -e "                         using the scenario passed as argument, or scenario.txt if nothing is passed."
     echo -e "  re                     Cleans, compiles and then runs the java program."
+    echo -e "  test                   Runs the program against all invalid scenarios."
     echo -e "  help                   Shows this page."
     echo
 }
@@ -100,6 +137,12 @@ while [ $# -gt 0 ]; do
         re)
             clean
             run
+            ;;
+        test)
+            clean
+            compile
+            test
+            clean
             ;;
         help)
             help
