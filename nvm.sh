@@ -15,6 +15,7 @@ WHITE="\033[1;37m"
 # 2: log message
 # 3: color
 _log() { echo -e "$3$1${RESET}: $2"; }
+debug() { _log "DEBUG" "$1" "${BLUE}"; }
 info() { _log "INFO" "$1" "${GREEN}"; }
 warning() { _log "WARNING" "$1" "${YELLOW}"; }
 error() { _log "ERROR" "$1" "${RED}"; }
@@ -22,7 +23,16 @@ error() { _log "ERROR" "$1" "${RED}"; }
 set -e
 
 # no args
+check_java_version() {
+	if ! grep -sq '21' <<< "$(java -version 2>&1 | head -1)"; then
+		error "Invalid java version, use JDK21 or superior"
+		exit 7
+	fi
+}
+
+# no args
 compile() {
+	check_java_version
     local sources_file=".sources"
     find * -name "*.java" > ${sources_file}
     javac -d target @${sources_file}
@@ -45,6 +55,7 @@ clean() {
 # This method disables the catch any error (set -e)
 # 1: scenario to execute, no default
 _execute() {
+	check_java_version
     if [ -z "$1" ]; then
         error "_execute received no arguments"
     fi
@@ -81,6 +92,7 @@ run() {
 }
 
 test() {
+	check_java_version
     local total_tests="$(find scenarios -name "invalid*.txt" | wc -l)"
     local ok_tests=0
 
