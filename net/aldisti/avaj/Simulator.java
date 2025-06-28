@@ -13,9 +13,12 @@ import net.aldisti.avaj.aircrafts.Flyable;
 import net.aldisti.avaj.towers.WeatherTower;
 
 public class Simulator {
+    private static final String AIRCRAFT_ROW_REGEX = "^([a-zA-Z]+)\\s+([a-zA-Z]\\d+)(\\s+\\d{1,3}){3}\\s*$";
+    private static final String CYCLES_REGEX = "^\\d{1,6}$";
 
     private static final AircraftFactory factory = AircraftFactory.create();
     private static final WeatherTower tower = new WeatherTower();
+
     private static int cycles = -1;
 
     public static void main(String[] av) {
@@ -50,15 +53,17 @@ public class Simulator {
     private static void initializeScenario(String scenario) {
         try (Scanner reader = new Scanner(new File(scenario))) {
             String line = reader.nextLine().trim();
-            if (!line.matches("^\\d*?$")) {
+            if (!line.matches(CYCLES_REGEX)) {
                 System.out.println("Error: first line of scenario must be an integer!");
                 System.exit(2);
             }
+            int rowIndex = 1;
             cycles = Integer.parseInt(line);
             while (reader.hasNextLine()) {
+                rowIndex++;
                 line = reader.nextLine().trim();
-                if (!line.matches("^([a-zA-Z]+)\\s+([a-zA-Z]\\d+)\\s+(\\d+\\s*){3}$")) {
-                    System.out.println("Error: found invalid line format!");
+                if (!line.matches(AIRCRAFT_ROW_REGEX)) {
+                    System.out.println("Error: found invalid line (" + rowIndex + ") format!");
                     System.exit(3);
                 }
                 parseFlyable(line).registerTower(tower);
